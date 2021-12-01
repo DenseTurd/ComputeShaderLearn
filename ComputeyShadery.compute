@@ -1,0 +1,26 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSGain
+
+#include "UnityCG.cginc"
+
+#define PI 3.14159265359
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+
+struct Structy
+{
+    float3 pos;
+};
+
+RWStructuredBuffer<Structy> bufferTing;
+int nStructys;
+
+[numthreads(1, 1024, 1)]
+void CSGain (uint3 id : SV_DispatchThreadID)
+{
+    int xOffset = round(id.y/256);
+    bufferTing[id.y].pos.x = (xOffset * 8) + cos((_Time.y * 2 * PI) + id.y);
+    bufferTing[id.y].pos.y = (id.y - (xOffset * 256)) + cos((_Time.y * 2 * PI) + id.y + 90);
+    bufferTing[id.y].pos.z = cos((_Time.y * 2 * PI) + id.y + 180);
+
+}
